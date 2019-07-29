@@ -12,7 +12,7 @@ function brains(inputCmd, inputValue){
             break
             
         case 'spotify-this-song':
-            spotifyThisSong(inputValue)
+            spotifyThis(inputValue)
             break
 
         case 'movie-this':
@@ -51,10 +51,10 @@ function concertThis(band) {
         })
 
 }
-function spotifyThisSong() {
+function spotifyThis(song) {
     console.log(`pulling data from spotify...
     `)
-    var search = inputValue
+    var search = song
     if (search === undefined) { search = 'Ace of Base The Sign'}
     spotify
         .search({type: 'track', query: search, limit: 2})
