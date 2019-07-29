@@ -5,26 +5,31 @@ var keys = require("./keys.js");
 var Spotify = require("node-spotify-api")
 var spotify = new Spotify(keys.spotify);
 
+
 var inputCmd = process.argv[2]
 var inputValue = process.argv[3]
 
+function brains(){
 
-switch (inputCmd){
-    case 'concert-this':
-        concertThis()
-        break
-        
+
+    switch (inputCmd){
+        case 'concert-this':
+            concertThis()
+            break
+            
         case 'spotify-this-song':
-        spotifyThisSong()
-        break
+            spotifyThisSong()
+            break
 
         case 'movie-this':
-        movieThis()
-        break
-        
-    case 'do-what-it-says':
-        doWhatItSayS()
-        break
+            movieThis()
+            break
+            
+        case 'do-what-it-says':
+            doWhatItSays()
+            break
+    }
+
 }
 
 
@@ -47,13 +52,11 @@ function concertThis() {
             console.log(err)
         })
 
-    }
-
-
+}
 function spotifyThisSong() {
     console.log('pulling data from spotify')
     var search = inputValue
-    if (inputValue === undefined) { search = 'Ace of Base The Sign'}
+    if (search === undefined) { search = 'Ace of Base The Sign'}
     spotify
         .search({type: 'track', query: search, limit: 2})
         .then(function(response){
@@ -70,12 +73,10 @@ function spotifyThisSong() {
         })
     
 }
-
-
-function movieThis () {
+function movieThis() {
     console.log('combing through IMDB')
     var query = inputValue
-    if (inputValue === undefined) { query = 'Mr.Nobody'}
+    if (query === undefined) { query = 'Mr.Nobody'}
     
     var movieURL = `http://www.omdbapi.com/?apikey=trilogy&t=${query}`
     axios.get(movieURL)
@@ -97,6 +98,20 @@ function movieThis () {
         .catch(function(err){
             console.log(err)
         })
-
-
 }
+function doWhatItSays() {
+    console.log('Doing what it says...')
+    fs.read('./random.txt', 'utf8', function(error, data){
+        if(error){console.log(error)}
+
+        data = data.split(',')
+        console.log(data)
+
+
+        inputCmd = data[0]
+        inputValue = data[1]
+    })
+    brains()
+}
+
+brains()
